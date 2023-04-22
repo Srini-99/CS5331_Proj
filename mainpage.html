@@ -32,7 +32,7 @@
                     myIframe.onload = function() {
                         sendComments(myIframe.contentWindow);
                     };
-                    myIframe.src = "sandbox.html"
+                    myIframe.src = "sandbox.html" // if virtual host then, http://sandboxpage.com/sandbox.html"
                     // sendComments()
                 }
                 function setSrcNotSandbox() {
@@ -40,7 +40,7 @@
                     myIframe.onload = function() {
                         sendComments(myIframe.contentWindow);
                     };
-                    myIframe.src = "notsandbox.html"
+                    myIframe.src = "notsandbox.html" // if virtual host then, http://sandboxpage.com/notsandbox.html"
                     // sendComments()
                 }
                 function sendComments() {
