@@ -31,8 +31,15 @@
       }
 
       function handleEval(evalmsg){
-      var evalmessage = "Eval() found.";
-      logs.push(evalmessage);
+      // var evalmessage = "Eval() found.";
+      // logs.push(evalmessage);
+      logs += "Eval() found";
+      }
+      
+      function handleWEval(evalmsg){
+      // var evalmessage = "Eval() found.";
+      // logs.push(evalmessage);
+      logs += "Eval() found";
       }
 
       // ----- Overriding existing functions -----
@@ -43,12 +50,12 @@
       var originalAlert = alert;
       alert = handleAlert;
     
-      // eval()
+      // eval() - if strict mode is not enabled
       var originalEval = eval;
       eval = handleEval;
 
       var originalWindowEval = window.eval;
-      window.eval = handleEval;
+      window.eval = handleWEval;
 
     </script>
     <script src="receiveMessage.js"></script>
