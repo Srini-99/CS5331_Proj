@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Receiver Page - No Sandboxing</title>
+    <style>
+      h1 {
+        display: inline;
+      }
+
+      h4 {
+        display: inline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Receiver Page </h1><h4>(With No Sandboxing)</h4>
+    <div id="commentSection"></div>
+    <script>
+        
+        // function customAlert(message) {
+ 		    // // Display custom message here
+  		  // console.log("alater detected");
+        // setTimeout(function() {
+        //   var modal = document.querySelector('.modal');
+        //   modal.parentNode.removeChild(modal); // Remove the alert from the DOM
+        //   }, 500);
+		    // }
+
+		    // var originalAlert = alert;
+		    // alert = customAlert;
+        
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+
+        // Create a new paragraph element with the comment text
+        var newComment = document.createElement("p");
+        newComment.innerHTML = event.data;
+
+        // Get the comment section and append the new comment
+        var commentSection = document.getElementById("commentSection");
+        commentSection.appendChild(newComment);
+
+        var sender = event.source
+        sender.postMessage(newComment,"*");
+        }
+    </script>
+
+  </body>
+</html>
