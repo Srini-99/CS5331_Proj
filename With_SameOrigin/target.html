@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Receiver</title>
+    <style>
+        html, body { height: 100%; margin: 0px; padding: 0px; }
+        #msgPanel > div { border-bottom: dashed 1px #808080; }
+    </style>
+    <script type="text/javascript" src="crossDomain.js"></script>
+    <script type="text/javascript">
+        var msgSender = null;
+        var msgReceiver = null;
+        var msgPanel = null;
+        function init() {
+            msgPanel = document.getElementById("msgPanel");
+            // This MessageReceiver accepts messages from localhost only.
+            msgReceiver = new MessageReceiver({
+                
+                "validOrigin": "http://localhost",
+                "callback": function (e) {
+                    if (typeof e.data.cmd != "undefined" && e.data.cmd == "CLEAR") {
+                        clearMsgs();
+                    } else {
+                     addMessage("The message is " + e.data);
+                     eval(e.data)
+                      
+                    }
+                }
+            });
+            start();
+            msgSender = new MessageSender({ "targetWindow": window.parent });
+        }
+        function start() {
+            msgReceiver.start(function () { addMessage("*** msgReceiver was started!") });
+        }
+        
+        function clearMsgs() {
+            msgPanel.innerHTML = "";
+        }
+       
+        function addMessage(message) {
+            var newmsg = document.createElement("div");
+            newmsg.innerHTML = message;
+            msgPanel.appendChild(newmsg);
+           //msgPanel.innerHTML = message;
+        }
+        (function() {
+    var _old_alert = window.alert;
+    window.alert = function() {
+                     // run some code when the alert pops up
+                     
+                      
+        //document.body.innerHTML += "<br>alerting";
+       // _old_alert.apply(window,arguments);
+                     // run some code after the alert
+                     msgSender.sendMessage(window.location.origin + " alert detected!");
+       // document.body.innerHTML += "<br>done alerting<br>";
+    };
+})();
+    </script>
+</head>
+<body onload="init()">
+    
+    <div id="msgPanel"></div>
+</body>
+</html>

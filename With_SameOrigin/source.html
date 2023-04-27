@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sender</title>
+    <style>
+        html, body { height: 100%; margin: 0px; padding: 0px; }
+        #msg_sec { height: 100px; line-height: 50px; vertical-align: middle; padding-left: 10px; padding-right: 10px; }
+        #target_sec, #targetWindow {display: block; position: absolute; }
+        #target_sec { top: 51px; bottom: 5px; left: 5px; right: 5px; border: solid 1px; box-sizing: border-box; }
+        #targetWindow { width: 100%; height: 100%; border: none; }
+    </style>
+    <script type="text/javascript" src="crossDomain.js"></script>
+    <script type="text/javascript">
+        var msgSender = null;
+        var msgReceiver = null;
+        var msg = null;
+        function init() {
+          
+            var targetDomain = "http://localhost";
+            var tw = document.getElementById("targetWindow");
+            
+            tw.src = targetDomain + "/sandbox/target.html";
+            msgSender = new MessageSender({ "targetWindow": window.frames["target"], "targetDomain": targetDomain });
+            msg = document.getElementById("txtmsg");
+            // Creates a MessageReceiver that accepts messages from target domain only
+           // new MessageReceiver({ "validOrigin": targetDomain }).start();
+           
+           
+              msgReceiver = new MessageReceiver({
+               
+                "validOrigin": "http://localhost",
+                "callback": function (e) {
+                    
+                     document.getElementById("feedback").innerHTML = "alert detected";
+                      
+                    
+                }
+            }).start();
+            
+            
+            
+        }
+        function sendText() {
+        document.getElementById("feedback").innerHTML = "";
+            msgSender.sendMessage(msg.value);
+        }
+       
+        function sendClear() {
+         document.getElementById("feedback").innerHTML = "";
+            msgSender.sendMessage({ "cmd": "CLEAR" });
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="msg_sec">
+        <label for="txtmsg">Message:</label>
+        <input type="text" id="txtmsg" size="30" />
+        <input type="button" value="send text" onclick="sendText()"/>
+        
+        <input type="button" value="send clear" onclick="sendClear()"/>
+        <label id="feedback" style="color:red;"></label>
+    </div>
+    <div id="target_sec">
+        <iframe id="targetWindow" name="target"></iframe>
+    </div>
+</body>
+</html>
